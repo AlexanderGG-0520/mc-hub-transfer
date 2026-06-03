@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "mc-hub-transfer",
+  "version": "${version}",
+  "name": "mc-hub-transfer",
+  "description": "Client-side /transfer-like command for Fabric Minecraft 1.20.1.",
+  "authors": [
+    "mc-hub-transfer contributors"
+  ],
+  "license": "GPL-3.0-or-later",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "io.github.mchubtransfer.McHubTransferClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.14.21",
+    "fabric-api": "*",
+    "minecraft": "=1.20.1",
+    "java": ">=17"
+  }
+}
