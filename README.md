@@ -1,27 +1,21 @@
 # mc-hub-transfer
 
-mc-hub-transfer is a client-side Fabric mod that adds `/transfer`-like behavior for Minecraft clients in pre-1.20.5 environments.
+mc-hub-transfer is a server-side Fabric mod that adds `/hub`.
 
 ## Support
 
 - Loader: Fabric
-- Minecraft: 1.20.1
+- Minecraft: 26.1.2
 - Mod version: 0.1.0
-
-Forge, NeoForge, Quilt, and multi-version support are not included in v0.1.0.
 
 ## Usage
 
 ```text
-/transfer example.com
-/transfer example.com 25565
+/hub
 ```
 
-If the port is omitted, the mod uses `25565`.
-
-This is client-side `/transfer`-like behavior for environments before Minecraft 1.20.5. It disconnects the client from the current server and starts a normal client connection to the requested server.
-
-This is not the same as the official Minecraft 1.20.5+ server transfer packet. The command is handled locally by the client and is not sent to the server.
+Install the mod and Fabric API on each non-hub server. Players who run `/hub`
+are transferred to `play.alec-ofc.com:25565`.
 
 ## License
 
