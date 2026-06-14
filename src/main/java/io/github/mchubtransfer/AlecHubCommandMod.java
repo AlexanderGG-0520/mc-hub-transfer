@@ -2,31 +2,33 @@ package io.github.mchubtransfer;
 
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.permissions.PermissionSet;
 
 public final class AlecHubCommandMod implements ModInitializer {
-    private static final String TRANSFER_COMMAND = "transfer play.alec-ofc.com 25565";
+    public static final String MOD_ID = "alec_hub_command";
+
+    private final HubTransferConfigService configService = new HubTransferConfigService(
+            FabricLoader.getInstance().getConfigDir().resolve("mc-hub-transfer.json")
+    );
+    private final HubReturnService hubReturnService = new HubReturnService(configService);
 
     @Override
     public void onInitialize() {
-        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) ->
-                dispatcher.register(Commands.literal("hub").executes(context -> {
-                    ServerPlayer player = context.getSource().getPlayerOrException();
+        ServerLifecycleEvents.SERVER_STARTING.register(server -> {
+            if (!server.isDedicatedServer()) {
+                configService.disable("mc-hub-transfer is a dedicated-server-only mod. Singleplayer/integrated server is not supported.");
+                server.sendSystemMessage(Component.literal(configService.disabledReason()));
+                return;
+            }
 
-                    player.sendSystemMessage(Component.literal("Hub鯖に転送します..."));
-                    CommandSourceStack elevatedSource = context.getSource().withPermission(PermissionSet.ALL_PERMISSIONS);
+            configService.loadOrCreate();
+        });
 
-                    context.getSource().getServer().getCommands().performPrefixedCommand(
-                            elevatedSource,
-                            TRANSFER_COMMAND
-                    );
-
-                    return 1;
-                }))
-        );
+        CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
+            HubCommand.register(dispatcher, configService, hubReturnService);
+            HubTransferAdminCommand.register(dispatcher, configService);
+        });
     }
 }
