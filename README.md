@@ -10,7 +10,7 @@ clear message.
 
 - Loader: Fabric
 - Minecraft: 26.1.2
-- Mod version: 0.1.0
+- Mod version: 0.2.0
 - Environment: dedicated server only
 
 ## Config
