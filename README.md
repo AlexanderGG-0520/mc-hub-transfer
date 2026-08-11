@@ -9,7 +9,7 @@ clear message.
 ## Support
 
 - Loader: Fabric
-- Minecraft: 26.1.2
+- Minecraft: 26.2
 - Mod version: 0.2.0
 - Environment: dedicated server only
 
